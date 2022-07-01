@@ -18,26 +18,12 @@ namespace Dynamic_lines
 
             len = Math.Sqrt(Math.Pow(endPoint.X - startPoint.X, 2) + Math.Pow(endPoint.Y - startPoint.Y, 2));
         }
-
-        private int GetPointQuater(Point point)
-        {
-            if (point.X >= 0 && point.Y > 0)
-                return 1;
-            if (point.X <= 0 && point.Y >= 0)
-                return 2;
-            if (point.X < 0 && point.Y < 0)
-                return 3;
-            if (point.X >= 0 && point.Y <= 0)
-                return 4;
-            return 1;
-        }
-
         private Point GetDivPoint(Point start, int divIndex, int divStep)
         {
             int x;
             int y;
 
-            if (start.X + start.Y < len) //start.X < len / 2 || start.Y < len / 2
+            if (start.X + start.Y < len)
             {
                 x = start.X + (int)(divIndex * divStep * Math.Sin(angle));
                 y = start.Y + (int)(divIndex * divStep * Math.Cos(angle));
@@ -83,7 +69,6 @@ namespace Dynamic_lines
                 if (enabled[2]) g.DrawLine(pen, first.endPoint, backFEnd);
                 if (enabled[3]) g.DrawLine(pen, second.endPoint, backSEnd);
             }
-
         }
     }
 }

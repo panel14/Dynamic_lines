@@ -22,6 +22,7 @@ namespace Dynamic_lines
         Pen pen;
         Color backColor;
         Color penColor;
+        Bitmap image;
 
         public Form1()
         {
@@ -74,6 +75,8 @@ namespace Dynamic_lines
 
             foreach (Axis ax in axes)
                 ax.Draw(ref g, ref pen);
+
+            pictureBox1.Invalidate();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -92,10 +95,10 @@ namespace Dynamic_lines
         private void button4_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                return;
-            string filepath = saveFileDialog1.FileName;
-            Image savedImage = pictureBox1.Image;
-            savedImage.Save(filepath);
+            {
+                image.Save(saveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -110,7 +113,10 @@ namespace Dynamic_lines
             axes.Add(new Axis(new Point(wMid, 0), new Point(wMid, height), 0));
             axes.Add(new Axis(new Point(0, hMid), new Point(width, hMid), 1.57));
 
-            g = pictureBox1.CreateGraphics();
+            image = new Bitmap(width, height);
+            pictureBox1.Image = image;
+            g = Graphics.FromImage(image);
+
             pen = new Pen(Color.Black);
 
             foreach (Axis axis in axes)
@@ -122,7 +128,11 @@ namespace Dynamic_lines
             penColor = Color.Black;
             isParty = false;
             checks = new CheckBox[4] { checkBox4, checkBox3, checkBox2, checkBox5 };
-            saveFileDialog1.Filter = "Bitmap (*.bmp)|*.bmp|All files (*.*)|*.*";
+
+            saveFileDialog1.Title = "Save image as...";
+            saveFileDialog1.Filter = "Image Files(*.bmp)|*.bmp|Image Files(*.jpg)|*.jpg|Image Files(*.gif)|*.gif|Image Files(*.png)|*.png|All files (*.*)|*.*";
+            saveFileDialog1.OverwritePrompt = true;
+            saveFileDialog1.ShowHelp = true;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -159,6 +169,7 @@ namespace Dynamic_lines
                 if (i + 1 == sorted.Length)
                     second.InvertAxis();
             }
+            pictureBox1.Invalidate();
         }
     }
 }
