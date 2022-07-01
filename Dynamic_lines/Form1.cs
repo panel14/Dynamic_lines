@@ -17,7 +17,6 @@ namespace Dynamic_lines
         bool isParty;
 
         CheckBox[] checks;
-        List<Point> startPoints = new List<Point>();
         List<Axis> axes = new List<Axis>();
         Graphics g;
         Pen pen;
@@ -90,6 +89,15 @@ namespace Dynamic_lines
             isParty = checkBox1.Checked;
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                return;
+            string filepath = saveFileDialog1.FileName;
+            Image savedImage = pictureBox1.Image;
+            savedImage.Save(filepath);
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             width = pictureBox1.Width;
@@ -97,12 +105,6 @@ namespace Dynamic_lines
             wMid = width / 2;
             hMid = height / 2;
             stepSize = int.Parse(textBox1.Text);
-
-            //Will be deleted
-            startPoints.Add(new Point(wMid, 0));
-            startPoints.Add(new Point(0, hMid));
-            startPoints.Add(new Point(wMid, height));
-            startPoints.Add(new Point(width, hMid));
 
             axes = new List<Axis>();
             axes.Add(new Axis(new Point(wMid, 0), new Point(wMid, height), 0));
@@ -120,6 +122,7 @@ namespace Dynamic_lines
             penColor = Color.Black;
             isParty = false;
             checks = new CheckBox[4] { checkBox4, checkBox3, checkBox2, checkBox5 };
+            saveFileDialog1.Filter = "Bitmap (*.bmp)|*.bmp|All files (*.*)|*.*";
         }
 
         private void button1_Click(object sender, EventArgs e)
